@@ -1,0 +1,275 @@
+# 数据库
+
+## 1. 数据库系统概述
+
+<details open>
+  <summary>数据库, 数据库管理系统, 数据库系统</summary>
+  <p>数据库: 关联的数据集合</p>
+  <p>数据库管理系统: 管理数据</p>
+  <p>数据库系统: 以上两个组合</p>
+</details>
+
+<details open>
+  <summary>文件系统缺点</summary>
+  <p>冗余度大, 共享性差, 数据不一致, 结构化程度低</p>
+</details>
+
+<details open>
+  <summary>数据库系统特点</summary>
+  <p>与程序独立, 支持视图, 可控冗余, 支持共享, 可授权, 完整性约束</p>
+</details>
+
+<details open>
+  <summary>数据抽象与数据库三种模式</summary>
+  <p>视图抽象 --> 外模式 -> 概念抽象 --> 概念模式 -> 物理抽象 --> 内模式</p>
+</details>
+
+<details open>
+  <summary>基于对象的数据模型</summary>
+  <p>实体-联系模型, 面向对象模型</p>
+</details>
+
+<details open>
+  <summary>基于记录的数据模型</summary>
+  <p>关系数据模型, 网络数据模型, 层次数据模型</p>
+</details>
+
+<details open>
+  <summary>物理数据模型</summary>
+  <p>关系数据模型, 网络数据模型, 层次数据模型</p>
+</details>
+
+<details open>
+  <summary>数据库模式</summary>
+  <p>结构定义</p>
+</details>
+
+<details open>
+  <summary>数据库实例</summary>
+  <p>特定时刻存储的数据</p>
+</details>
+
+<details open>
+  <summary>数据库子语言</summary>
+  <p>定义子语言: 定义</p>
+  <p>操纵子语言: 除定义外的管理</p>
+</details>
+
+<details open>
+  <summary>数据库管理系统结构</summary>
+  <p>数据定义语言编译执行 -> 安全检查</p>
+  <p>查询预处理 -> 安全检查 -> 完整性约束</p>
+  <p>查询优化处理 -> 算法</p>
+  <p>数据操纵语言预编译 -> 算法</p>
+  <p>记录管理 => 并发控制, 数据恢复, 缓冲处理, 数据存取</p>
+</details>
+
+## 2. 关系数据库系统
+
+<details open>
+  <summary>关系代数</summary>
+  <p>并: (SELECT * FROM t1, t2)</p>
+  <p>差</p>
+  <p>笛卡尔积: (SELECT * FROM t1) UNION (SELECT * FROM t2)</p>
+  <p>投影: (SELECT A, B FROM t1)</p>
+  <p>选择: (SELECT * FROM t1 WHERE ...)</p>
+  <p>交: (SELECT * FROM t1) INNER JOIN (SELECT * FROM t2)</p>
+  <p>连接: 笛卡尔积 -> 选择</p>
+  <p>自然连接: 笛卡尔积 -> (right join on ...)</p>
+</details>
+
+<details open>
+  <summary>运算关系安全性</summary>
+  <p>没有无限关系、无穷验证</p>
+</details>
+
+## 3. 数据库安全性与完整性
+
+不允许受到恶意侵害或未授权修改, 数据始终满足语义约束
+
+<details open>
+  <summary>安全性</summary>
+  <p>口令, 授权, 加密, 防止微数据推导</p>
+</details>
+
+<details open>
+  <summary>完整性</summary>
+  <p>隐含约束: 定义的约束</p>
+  <p>状态约束: 值域, 唯一性, 联系</p>
+  <p>变迁约束: 值变的过程</p>
+  <p>显式约束: 编写的断言和程序控制的</p>
+</details>
+
+## 4. 数据库设计概述与需求分析
+
+对某应用领域, 设计优化的数据库逻辑和物理结构, 使之满足用户要求
+
+<details open>
+  <summary>数据库设计</summary>
+  <p>需求分析, 定义支持的信息、应用、 操作、 数据项, 预测未来改变</p>
+</details>
+
+## 5. 概念数据库设计
+
+分析需求得出数据模型(如实体联系模型 ER, 扩展实体联系模型 EER)
+
+<details open>
+  <summary>实体型, 实体模式, 实体</summary>
+  <p>实体型: 由实体模式定义</p>
+  <p>实体模式: 实体型的定义(数据库模式)</p>
+  <p>实体: 实体型的实例简称(元组, 对应数据库的一行数据)</p>
+</details>
+
+<details open>
+  <summary>联系型</summary>
+  <p>不同键间 M个 对 N个 , M:N 的联系</p>
+</details>
+
+<details open>
+  <summary>联系型实体关联约束</summary>
+  <p>全域关联约束: 子类综合即超类</p>
+  <p>部分关联约束: 子类综合小于超类</p>
+</details>
+
+<details open>
+  <summary>演绎, 归纳</summary>
+  <p>演绎: 超类 -> 子类</p>
+  <p>归纳: 子类 -> 超类</p>
+</details>
+
+## 6. 逻辑数据库设计
+
+规范化, 模式优化, 性能估计
+
+<details open>
+  <summary>函数依赖</summary>
+  <p>完全函数依赖: 若给出 AB->Z, 则只有 AB->Z</p>
+  <p>部分函数依赖: 若给出 AB->Z, 则还有A->Z或B->Z</p>
+</details>
+
+<details open>
+  <summary>主键, 候选键, 全键, 外键</summary>
+  <p>主键: 候选键中选出的一组</p>
+  <p>候选键: 唯一性, 最小性</p>
+  <p>全键: 所有属性都是候选键</p>
+  <p>外键: 另一个关系的候选键</p>
+</details>
+
+<details open>
+  <summary>Armstrong推理</summary>
+  <p>合并, 伪传递, 分解</p>
+  <p>(综合讲就是对AB->Z左边各种推理子集的传递替换)</p>
+</details>
+
+<details open>
+  <summary>闭包</summary>
+  <p>F = {AB -> C, C -> D}, A+ = {AB, C, D}: (Armstrong推理中出现的每一个未拆分量都存在于推理源的闭包)</p>
+</details>
+
+<details open>
+  <summary>最小函数依赖集</summary>
+  <p></p>
+</details>
+
+<details open>
+  <summary>NF(Normal Form)</summary>
+  <p>1NF: 属性都是简单属性</p>
+  <p>2NF: 1NF 且 没有部分依赖主键</p>
+  <p>3NF: 2NF 且 没有传递依赖</p>
+</details>
+
+<details open>
+  <summary>无损连接, 依赖保持</summary>
+  <p>无损连接: 联系型自然连接后恢复为原始信息</p>
+  <p>依赖保持: 不丢失原有的函数依赖关系</p>
+</details>
+
+<details open>
+  <summary>3NF分解</summary>
+  <p></p>
+</details>
+
+<details open>
+  <summary>关系模式优化</summary>
+  <p>水平分解(多表同模式), 垂直分解(范式)</p>
+</details>
+
+## 7. 物理数据库设计
+
+选取合适的物理存储结构, 方法
+
+## APPENDIX
+
+### 1. 无损连接判断
+
+### 2. 3NF 分解
+
+R<U, F>
+
+U = { A, B, C, D, E, F, G, H }
+
+F = { A->CGH, AD->C, DE->F, G->H }
+
+1. 若 F 中存在依赖 X->A 使 U 与集合{ X, A }相同, 原 R 加到结果集, 直接跳到 5 步
+
+- 此例没有
+
+2. 求最小函数依赖集 G
+
+- 将依赖确定分解为单属性
+
+  F = { A->C, A->G, A->H, AD->C, DE->F, G->H }
+
+- 去除冗余依赖
+
+  若去除 A->C, F = { A->G, A->H, AD->C, DE->F, G->H }. 因 F 中不存在 A+->C, 得 A->C 不冗余
+
+  > A->G, A->H => A+ = { A, G, H }
+
+  若去除 A->G, F = { A->C, A->H, AD->C, DE->F, G->H }. 因 F 中不存在 A+->G, 得 A->G 不冗余
+
+  > A->C, A->H => A+ = { A, C, H }
+
+  若去除 A->H, F = { A->C, A->G, AD->C, DE->F, G->H }. 因 F 中存在 A+->H, 去除 A->H
+
+  > A->C, A->G->H, A+ = { A, C, G, H }
+
+  若去除 AD->C, F = { A->C, A->G, DE->F, G->H }. 因 F 中存在 (AD)+->C, 去除 AD->C
+
+  > A->C, A->G->H, A+ = { A, C, G, H }
+
+  若去除 DE->F, F = { A->C, A->G, G->H }. 因 F 中不存在 (DE)+->F, 得 DE->F 不冗余
+
+  > (DE+) = { D, E }
+
+  若去除 G->H, F = { A->C, A->G, DE->F }. 因 F 中不存在 G+->H, 得 G->H 不冗余
+
+  > G+ = { G }
+
+- 去除依赖左部冗余. 以上得 F = { A->C, A->G, DE->F, G->H }
+
+  - DE->F:
+
+    若去除 D, F = { A->C, A->G, E->F, G->H }, 因 F 中不存在 D+->F, 得 D 不冗余
+
+    若去除 E, F = { A->C, A->G, D->F, G->H }, 因 F 中不存在 E+->F, 得 E 不冗余
+
+- 以上得最小依赖集 G = { A->C, A->G, DE->F, G->H }
+
+3. 将每个 G 中没有而 F 中有的依赖中的属性关系加到结果集
+
+- 此例没有
+
+4. 将每个 G 中的依赖关系加到结果集 (至此结果集为依赖保持的 3NF)
+
+- 此时结果集为 { R(A, C), R(A, G), R(D, E, F), R(G, H) }
+
+5. 添加一个关系 R(X, A) 到结果集, 满足 { X, A } 是原 R 的一个候选键
+
+- 这里设取候选键 DE, 此时结果集为 { R(A, C), R(A, G), R(D, E, F), R(G, H), R(D, E) }
+
+  > 原 R 从 F 中看出的候选键有 A, AD, DE, G. 注意候选键不同可能有不同结果
+
+6. 若存在 R1<=R2, 去除 R1 (至此结果集为依赖保持且无损连接的 3NF)
+
+- 因 R(D, E) <= R(D, E, F), 去除 R(D, E). 结果集为 { R(A, C), R(A, G), R(D, E, F), R(G, H) }
