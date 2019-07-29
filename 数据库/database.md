@@ -172,7 +172,7 @@
 </details>
 
 <details open>
-  <summary>NF(Normal Form)</summary>
+  <summary>范式 Normal Form</summary>
   <p>1NF: 属性都是简单属性</p>
   <p>2NF: 1NF 且 没有部分依赖主键</p>
   <p>3NF: 2NF 且 没有传递依赖</p>
@@ -197,6 +197,30 @@
 ## 7. 物理数据库设计
 
 选取合适的物理存储结构, 方法
+
+## 12. 并发控制技术
+
+<details open>
+  <summary>事务原子性被破坏因素</summary>
+  <p>多事务并发, 不同事物操作交叉: 需保证交叉运行的事务对原子性无影响</p>
+  <p>事务运行中被终止: 需保证终止的事务证对数据和其它事务无影响</p>
+</details>
+
+<details open>
+  <summary>事务状态</summary>
+  <p>活动状态 -> 部分提交状态 -> 提交状态</p>
+  <p>活动状态 -> 失败状态 -> 异常结束状态</p>
+  <p>部分提交状态 -> 失败状态</p>
+</details>
+
+<details open>
+  <summary>事务性质</summary>
+  <p>原子性Atomicity</p>
+  <p>数据库正确保持性Consistency</p>
+  <p>操作结果永久保持性Durability</p>
+  <p>独立性Isolation</p>
+  <p>可串行性Serializability</p>
+</details>
 
 ## APPENDIX
 
@@ -273,3 +297,107 @@ F = { A->CGH, AD->C, DE->F, G->H }
 6. 若存在 R1<=R2, 去除 R1 (至此结果集为依赖保持且无损连接的 3NF)
 
 - 因 R(D, E) <= R(D, E, F), 去除 R(D, E). 结果集为 { R(A, C), R(A, G), R(D, E, F), R(G, H) }
+
+### 3. 可串行性测试
+
+调度 S 的事务集 { T1, T2, T3 }
+
+| 时间 |    T1    |    T2    |    T3    |
+| :--: | :------: | :------: | :------: |
+|  ↓   | READ(Q)  |          |          |
+|  ↓   |          | WRITE(Q) |          |
+|  ↓   |          |          | READ(Q)  |
+|  ↓   | WRITE(Q) |          |          |
+|  ↓   |          |          | WRITE(Q) |
+
+1. 构造 S 前趋图
+
+- S 化为 S"
+
+  - S 中加两个附加事务 Tb, Tf. Tb 作第一个, Tf 作最后一个
+
+    | Tb  |    T1    |    T2    |    T3    | Tf  |
+    | :-: | :------: | :------: | :------: | :-: |
+    | op  |          |          |          |     |
+    |     | READ(Q)  |          |          |     |
+    |     |          | WRITE(Q) |          |     |
+    |     |          |          | READ(Q)  |     |
+    |     | WRITE(Q) |          |          |     |
+    |     |          |          | WRITE(Q) |     |
+    |     |          |          |          | op  |
+
+  - 对事务集中存取的每个 Q, Tb 包含一个 WRITE(Q), Tf 包含一个 READ(Q)
+
+    由于只有 Q
+
+    |    Tb    |    T1    |    T2    |    T3    |   Tf    |
+    | :------: | :------: | :------: | :------: | :-----: |
+    | WRITE(Q) |          |          |          |         |
+    |          | READ(Q)  |          |          |         |
+    |          |          | WRITE(Q) |          |         |
+    |          |          |          | READ(Q)  |         |
+    |          | WRITE(Q) |          |          |         |
+    |          |          |          | WRITE(Q) |         |
+    |          |          |          |          | READ(Q) |
+
+- 构造 S" 的标号前趋图
+
+  - 若 Tj 读取 Ti 写的 Q, 加一条标记 0 的边: Ti -> 0 -> Tj
+
+    即 READ 紧跟 WRITE 时
+
+    Tb -> 0 -> T1, T2 -> 0 -> T3, T3 -> 0 -> Tf
+
+  - 当且仅当不存在 Ti 到 Tf 的路径(且 i != b)时, 去掉连接 Ti 的边
+
+    由于存在 T3 -> 0 -> Tf, 不去掉连接 T3 的边
+
+  - 若有 Tj 读取 Ti 写的 Q, Tk 执行 WRITE(Q), 那么对 Tk 不是 Tb 的每一项 Q
+
+    首先可得非 Tb 的每一项 Tk : T
+
+    - 若 Ti = Tb 且 Tj != Tf, 加入边 Tj -> 0 -> Tk
+
+      即 Tb 紧接的后一个非 Tf 的读取 Tb 写的 Q
+
+      即 T1 读 Tb, j = 1
+
+      由表知 T2, T3 都有 WRITE, 加入这两个 k : T1 -> 0 -> T2, T1 -> 0 -> T3
+
+    - 若 Ti != Tb 且 Tj = Tf, 加入边 Tk -> 0 -> Ti
+
+      即 Tf 读取 Tf 紧接的前一个非 Tb 的写的 Q
+
+      即 Tf 读 T3, i = 3
+
+      由表知 T1, T2 都有 WRITE, 加入这两个 k : T1 -> 0 -> T3, T2 -> 0 -> T3
+
+    - 若 Ti != Tb 且 Tj != Tf, 加入边 Tj -> p -> Tk 和 Tk -> p -> Ti. 其中 p 是大于 0 且没做过边标号的正整数
+
+      即不看事务 Tb, Tf
+
+      因有 T2 -> 0 -> T3, 且 T1 有 WRITE, j = 3, i = 2, k = 1
+
+      加入边 T3 -> 1 -> T1, T1 -> 1 -> T2
+
+2. 回路测试算法测前趋图是否有回路
+
+- 最终边有
+
+  Tb -> 0 -> T1
+
+  T1 -> 0 -> T2
+
+  T2 -> 0 -> T3
+
+  T3 -> 0 -> Tf
+
+  T1 -> 0 -> T3
+
+  T1 -> 1 -> T2
+
+  T3 -> 1 -> T1
+
+3. 若没有回路, S 是冲突可串行, 否则不是
+
+- 没有回路, S 冲突可串行
