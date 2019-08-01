@@ -222,6 +222,132 @@
   <p>可串行性Serializability</p>
 </details>
 
+<details open>
+  <summary>锁类型</summary>
+  <p>共享锁, 互斥锁</p>
+</details>
+
+<details open>
+  <summary>两段锁协议</summary>
+  <p>加锁: 可申请获得任何项的任何锁, 但不能释放</p>
+  <p>解锁: 可申请获得任何项的任何锁, 但不能申请</p>
+</details>
+
+<details open>
+  <summary>树协议</summary>
+  <p>有向无环树形图, 只能加 X 锁. 父节点被事务 T 加锁后才能由 T 向子节点加锁, 由事务 T 加锁解锁后不能再由 T 加锁</p>
+</details>
+
+<details open>
+  <summary>多版本并发控制技术</summary>
+  <p>多版本时间印协议</p>
+</details>
+
+<details open>
+  <summary>多粒度锁协议</summary>
+  <table>
+    <tr>
+      <th></th>
+      <th>S</th>
+      <th>X</th>
+      <th>IS</th>
+      <th>IX</th>
+      <th>SIX</th>
+    </tr>
+    <tr>
+      <th>S</th>
+      <td>1</td>
+      <td>x</td>
+      <td>1</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <th>X</th>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <th>IS</th>
+      <td>1</td>
+      <td>x</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>IX</th>
+      <td>x</td>
+      <td>x</td>
+      <td>1</td>
+      <td>1</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <th>SIX</th>
+      <td>x</td>
+      <td>x</td>
+      <td>1</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+  </table>
+</details>
+
+<details open>
+  <summary>日志恢复技术</summary>
+  <p>推迟更新技术: 先把新值写日志, 统一更新</p>
+  <p>即时更新技术: 先把事务写日志, 成功后立即更新</p>
+</details>
+
+<details open>
+  <summary>缓冲技术</summary>
+  <p>日志缓冲</p>
+  <p>数据库缓冲</p>
+</details>
+
+<details open>
+  <summary>检测点</summary>
+  <p>只需找最近的检测点开始恢复</p>
+</details>
+
+<details open>
+  <summary>影子页面技术</summary>
+  <p>事务开始时: 页面产生两个副本, 影子页 + 当前页</p>
+  <p>事务执行时: 操作当前页, 若成功, 修改索引指向到当前页, 否则指向原页</p>
+</details>
+
+<details open>
+  <summary>可恢复调度</summary>
+  <p>任何情况都能保证数据库正确恢复的调度</p>
+  <p>若一个事务读取一个被更新的数据项, 更新数据项的事务必须已提交</p>
+  <table>
+    <tr>
+      <th>T1</th>
+      <th>T2</th>
+    </tr>
+    <tr>
+      <td>READ(A)</td>
+    </tr>
+    <tr>
+      <td>WRITE(A)</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>READ(A)</td>
+    </tr>
+    <tr>
+      <td>READ(B)</td>
+      <td></td>
+      <td>若T1失败, 嵌套撤销</td>
+    </tr>
+  </table>
+  <p>可设提交位, T1提交后才可读, 否则等待</p>
+</details>
+
 ## APPENDIX
 
 ### 1. 无损连接判断
