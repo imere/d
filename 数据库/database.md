@@ -348,6 +348,40 @@
   <p>可设提交位, T1提交后才可读, 否则等待</p>
 </details>
 
+<details open>
+  <summary>一维数据划分</summary>
+  <p>Round-Robin: i mod N</p>
+  <p>Hash</p>
+  <p>Range: 将某一属性分为 N 个值域区间, 实例分 N 份按区间存储</p>
+  <p>Hybrid-Range: Range + Round-Robin</p>
+</details>
+
+<details open>
+  <summary>查询优化</summary>
+  <p>基于左线性树</p>
+  <p>基于右线性树</p>
+</details>
+
+### 21. 数据仓库与联机分析处理技术
+
+<details open>
+  <summary>多维数据集合的关系表示方法</summary>
+  <p>星形模式 Star schema: 单级索引</p>
+  <p>雪花模式 Snowflake schema: 多级索引</p>
+</details>
+
+### 22. 数据挖掘技术
+
+<details open>
+  <summary>Apriori</summary>
+  <p></p>
+</details>
+
+<details open>
+  <summary>k-means</summary>
+  <p></p>
+</details>
+
 ## APPENDIX
 
 ### 1. 无损连接判断
