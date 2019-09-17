@@ -420,7 +420,7 @@ F = { A->CGH, AD->C, DE->F, G->H }
 
   若去除 AD->C, F = { A->C, A->G, DE->F, G->H }. 因 F 中存在 (AD)+->C, 去除 AD->C
 
-  > A->C, A->G->H, A+ = { A, C, G, H }
+  > A->C, A->G->H, (AD)+ = { A, C, D, G, H }
 
   若去除 DE->F, F = { A->C, A->G, G->H }. 因 F 中不存在 (DE)+->F, 得 DE->F 不冗余
 
@@ -452,7 +452,7 @@ F = { A->CGH, AD->C, DE->F, G->H }
 
 - 这里设取候选键 DE, 此时结果集为 { R(A, C), R(A, G), R(D, E, F), R(G, H), R(D, E) }
 
-  > 原 R 从 F 中看出的候选键有 A, AD, DE, G. 注意候选键不同可能有不同结果
+  > 原 R 从 F 中看出的候选键有 A, AD, DE, G.
 
 6. 若存在 R1<=R2, 去除 R1 (至此结果集为依赖保持且无损连接的 3NF)
 
@@ -513,8 +513,6 @@ F = { A->CGH, AD->C, DE->F, G->H }
     由于存在 T3 -> 0 -> Tf, 不去掉连接 T3 的边
 
   - 若有 Tj 读取 Ti 写的 Q, Tk 执行 WRITE(Q), 那么对 Tk 不是 Tb 的每一项 Q
-
-    首先可得非 Tb 的每一项 Tk : T
 
     - 若 Ti = Tb 且 Tj != Tf, 加入边 Tj -> 0 -> Tk
 
